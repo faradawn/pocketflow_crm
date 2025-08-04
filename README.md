@@ -1,0 +1,18 @@
+# CRM Backfill Flow for Talbots
+
+This diagram illustrates the automated workflow for backfilling CRM data and running identity resolution day-by-day. The process includes error handling and conditional branches for common failure scenarios.
+
+```mermaid
+flowchart TD
+    A["Step 1: CRM Ingestion (Dagster)"] --> B["Fix Duplicate Keys"]
+    B --> C["CRM DBT Build"]
+    C --> D["Step 2: Identity Resolution DBT"]
+    D --> E["Fix Conversion ID"]
+    E --> D
+    D -->|"next date"| A
+```
+
+> **Legend**
+> • Solid arrows represent the normal progression.
+> • Labeled arrows indicate conditional branches based on step outcomes.
+> • "Stop" denotes termination of the flow when an unrecoverable error occurs. 
